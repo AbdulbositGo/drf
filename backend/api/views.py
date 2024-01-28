@@ -1,10 +1,13 @@
-from django.shortcuts import render
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 import json
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 from products.models import Product
 
-
+@api_view(["GET"])
 def api_home(request, *args, **kwargs):
     model_data = Product.objects.all().order_by("?")
     products = {}
@@ -13,4 +16,4 @@ def api_home(request, *args, **kwargs):
             products[f'Product {product.id}'] =  model_to_dict(model_data.first())
     data = {'products': products}
     
-    return JsonResponse(data)
+    return Response(data)
