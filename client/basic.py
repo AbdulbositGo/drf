@@ -4,7 +4,7 @@ import requests as r
 # endpoint = "https://httpbin.org/anything"
 endpoint = "http://127.0.0.1:8000/api/"
 
-response = r.get(endpoint, json={"query": "Hello"})
+response = r.get(endpoint, params={'page': "Salom"}, json={"query": "Hello"})
 
 # print(response) get status code
 # print(response.text) row text response
@@ -15,4 +15,4 @@ response = r.get(endpoint, json={"query": "Hello"})
 
 # print(response.json()['message'])
 
-print(response.json()['message'])
+print(response.json())
