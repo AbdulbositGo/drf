@@ -1,7 +1,4 @@
 from django.forms.models import model_to_dict
-from django.http import JsonResponse
-import json
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -16,4 +13,4 @@ def api_home(request, *args, **kwargs):
             products[f'Product {product.id}'] =  model_to_dict(model_data.first())
     data = {'products': products}
     
-    return Response(data)
+    return Response(data)       
