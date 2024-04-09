@@ -1,4 +1,5 @@
 from django.forms.models import model_to_dict
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -8,11 +9,32 @@ from products.serializers import ProductSerializers
 
 @api_view(["GET"])
 def api_home(request, *args, **kwargs):
-    instance = Product.objects.all().order_by("?").first()
-    date = {}
-    if instance:
-        # data = model_to_dict(
-        #     instance.first(), fields=["id", "title", "content", "price", "sale_proce"]
-        # )
-        data = ProductSerializers(instance).data
-    return Response(data)   
+    serializer = ProductSerializers(data=request.data)
+    if serializer.is_valid():
+        print(serializer)
+        return Response(serializer.data)
+    return Response({"detail": "Not good data"})
+
+
+@api_view(["GET", "POST"])
+def product_alt_view(request, pk=None):
+    if request.method == "GET":
+        if pk is not None:
+            obj = get_object_or_404(Product, pk=pk)
+            data = ProductSerializers(obj).data
+            return Response(data)
+
+        queryset = Product.objects.all()
+        data = ProductSerializers(queryset, many=True).data
+        return Response(data)
+
+    if request.method == "POST":
+        serializer = ProductSerializers(data=request.data)
+        if serializer.is_valid(raise_exeption=True):
+            title = serializer.validated_data.get("title")
+            content = serializer.validated__data.get("content") or None
+            if content is None:
+                content = title
+            serializer.save(content=content)
+            return Response(serializer.data)
+        return Response({"detail": "Not good data"})

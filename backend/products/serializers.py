@@ -1,10 +1,11 @@
 from rest_framework import serializers
 
-from products.models import Product
+from .models import Product
 
 
 class ProductSerializers(serializers.ModelSerializer):
-    discount = serializers.SerializerMethodField(read_only=True)
+    my_discount = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Product
         fields = [
@@ -12,8 +13,8 @@ class ProductSerializers(serializers.ModelSerializer):
             "content",
             "price",
             'sale_price',
-            'discount',
+            'my_discount',
         ]
-    
-    def get_discount(self, obj):
+
+    def get_my_discount(self, obj):
         return obj.get_discount()
