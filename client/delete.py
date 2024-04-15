@@ -1,6 +1,13 @@
 import requests as r
 
-endpoint = f"http://127.0.0.1:8000/api/products/53/delete"
+pk = input("Enter a product pk: ")
+
+try:
+    pk = int(pk)
+except ValueError as e:
+    print(e)
+
+endpoint = f"http://127.0.0.1:8000/api/products/{pk}/delete"
 
 response = r.delete(endpoint)
 

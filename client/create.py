@@ -1,6 +1,6 @@
 import requests as r
 
-endpoint = "http://127.0.0.1:8000/api/products/"
+endpoint = f"http://127.0.0.1:8000/api/products/"
 
 data = {
     "title": "Product 51",
