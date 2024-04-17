@@ -2,6 +2,7 @@ from rest_framework import authentication, generics, mixins, permissions
 
 from .models import Product
 from .serializers import ProductSerializers
+from .permissons import IsStuffEditorPermission
 
 
 
@@ -9,7 +10,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializers
     authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAdminUser, IsStuffEditorPermission]
 
     def perform_create(self, serializer):
         title = serializer.validated_data.get("title")
