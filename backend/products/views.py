@@ -9,7 +9,10 @@ from .permissons import IsStuffEditorPermission
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializers
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [
+        authentication.SessionAuthentication,
+        authentication.TokenAuthentication
+    ]
     permission_classes = [permissions.IsAdminUser, IsStuffEditorPermission]
 
     def perform_create(self, serializer):
