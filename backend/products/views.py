@@ -1,15 +1,16 @@
-from rest_framework import authentication, generics, mixins, permissions
+from rest_framework import generics, mixins
 
 from .models import Product
 from .serializers import ProductSerializers
-from .permissons import IsStuffEditorPermission
+from api.mixins import StaffEditorPermissionMixin
 
 
-
-class ProductListCreateAPIView(generics.ListCreateAPIView):
+class ProductListCreateAPIView(
+    StaffEditorPermissionMixin,
+    generics.ListCreateAPIView
+    ):
     queryset = Product.objects.all()
     serializer_class = ProductSerializers
-    permission_classes = [permissions.IsAdminUser, IsStuffEditorPermission]
 
     def perform_create(self, serializer):
         title = serializer.validated_data.get("title")
@@ -19,25 +20,32 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
         serializer.save(content=content)
 
 
-class ProductDetailAPIView(generics.RetrieveAPIView):
+class ProductDetailAPIView(
+    StaffEditorPermissionMixin,
+    generics.RetrieveAPIView
+    ):
     queryset = Product.objects.all()
     serializer_class = ProductSerializers
 
 
-class ProductUpdateAPIView(generics.UpdateAPIView):
+class ProductUpdateAPIView(
+    StaffEditorPermissionMixin,
+    generics.UpdateAPIView
+    ):
     queryset = Product.objects.all()
     serializer_class = ProductSerializers
     lookup_field ="pk"
 
     def perform_update(request, serializer):
         instance = serializer.save()
-        print(instance.price)
-        print()
         if not instance.content:
             instance.content = instance.title
 
 
-class ProductDeleteAPIView(generics.DestroyAPIView):
+class ProductDeleteAPIView(
+    StaffEditorPermissionMixin,
+    generics.DestroyAPIView
+    ):
     queryset = Product.objects.all()
     serializer_class = ProductSerializers
     lookup_field = "pk"
@@ -50,7 +58,8 @@ class ProductMixinView(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
-    generics.GenericAPIView 
+    StaffEditorPermissionMixin,
+    generics.GenericAPIView
     ):
 
     queryset = Product.objects.all()
