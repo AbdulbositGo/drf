@@ -8,6 +8,7 @@ class ProductSerializers(serializers.ModelSerializer):
     my_discount = serializers.SerializerMethodField(read_only=True)
     url = serializers.SerializerMethodField(read_only=True)
     url_update = serializers.HyperlinkedIdentityField("product-update", lookup_field='pk')
+    email = serializers.EmailField(write_only=True)
 
     class Meta:
         model = Product
@@ -15,12 +16,19 @@ class ProductSerializers(serializers.ModelSerializer):
             "pk",
             'url',
             'url_update',
+            'email',
             "title",
             "content",
             "price",
             'sale_price',
             'my_discount',
         ]
+
+    def create(self, validated_data):
+        # email = validated_data.pop('email')
+        obj = super().create(validated_data)
+        # print(email, obj)
+        return obj
 
     def get_url(self, obj):
         request = self.context.get('request')
