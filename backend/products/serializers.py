@@ -8,7 +8,7 @@ class ProductSerializers(serializers.ModelSerializer):
     my_discount = serializers.SerializerMethodField(read_only=True)
     url = serializers.SerializerMethodField(read_only=True)
     url_update = serializers.HyperlinkedIdentityField("product-update", lookup_field='pk')
-    email = serializers.EmailField(write_only=True)
+    # email = serializers.EmailField(write_only=True)
 
     class Meta:
         model = Product
@@ -16,7 +16,7 @@ class ProductSerializers(serializers.ModelSerializer):
             "pk",
             'url',
             'url_update',
-            'email',
+            # 'email',
             "title",
             "content",
             "price",
@@ -24,11 +24,16 @@ class ProductSerializers(serializers.ModelSerializer):
             'my_discount',
         ]
 
-    def create(self, validated_data):
-        # email = validated_data.pop('email')
-        obj = super().create(validated_data)
-        # print(email, obj)
-        return obj
+    # def validate_title(self, value):
+    #     if Product.objects.filter(title__iexact=value).exists():
+    #         raise serializers.ValidationError(f"{value} is alredy a title name")
+    #     return value
+
+    # def create(self, validated_data):
+    #     # email = validated_data.pop('email')
+    #     obj = super().create(validated_data)
+    #     # print(email, obj)
+    #     return obj
 
     def get_url(self, obj):
         request = self.context.get('request')
