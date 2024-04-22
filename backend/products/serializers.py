@@ -9,11 +9,13 @@ class ProductSerializers(serializers.ModelSerializer):
     url = serializers.SerializerMethodField(read_only=True)
     url_update = serializers.HyperlinkedIdentityField("product-update", lookup_field='pk')
     # email = serializers.EmailField(write_only=True)
+    user = serializers.CharField(read_only=True)
 
     class Meta:
         model = Product
         fields = [
-            "pk",
+            'user',
+            'pk',
             'url',
             'url_update',
             # 'email',
@@ -23,6 +25,8 @@ class ProductSerializers(serializers.ModelSerializer):
             'sale_price',
             'my_discount',
         ]
+    # def get_user(self, obj):
+    #     return obj.user.username
 
     # def validate_title(self, value):
     #     if Product.objects.filter(title__iexact=value).exists():

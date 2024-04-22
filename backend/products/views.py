@@ -2,10 +2,11 @@ from rest_framework import generics, mixins
 
 from .models import Product
 from .serializers import ProductSerializers
-from api.mixins import StaffEditorPermissionMixin
+from api.mixins import StaffEditorPermissionMixin, UserQuerysetMixin
 
 
 class ProductListCreateAPIView(
+    UserQuerysetMixin,
     StaffEditorPermissionMixin,
     generics.ListCreateAPIView
     ):
@@ -18,7 +19,12 @@ class ProductListCreateAPIView(
         content = serializer.validated_data.get("content") or None
         if content is None:
             content = title
-        serializer.save(content=content)
+        serializer.save(user=self.request.user, content=content)
+    
+    # def get_queryset(self, *args, **kwargs):
+    #     qs = super().get_queryset(*args, **kwargs)
+    #     user = self.request.user
+    #     return qs.filter(user=user)
 
 
 class ProductDetailAPIView(
