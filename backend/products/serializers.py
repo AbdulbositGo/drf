@@ -2,14 +2,18 @@ from rest_framework import serializers
 from rest_framework.reverse import reverse
 
 from .models import Product
+from api.serializers import UserPublicSerializer
 
-class ProductSerializers(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField(read_only=True)
     url_update = serializers.HyperlinkedIdentityField('product-update', lookup_field='pk')
-   
+    
+    user = UserPublicSerializer(read_only=True)
+
     class Meta:
         model = Product
         fields = [
+            'user',
             'pk',
             'url',
             'url_update',
@@ -17,6 +21,7 @@ class ProductSerializers(serializers.ModelSerializer):
             'content',
             'price',
             'sale_price',
+            'public',
         ]
 
     def get_url(self, obj):

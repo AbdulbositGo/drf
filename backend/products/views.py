@@ -1,7 +1,7 @@
 from rest_framework import generics, mixins
 
 from .models import Product
-from .serializers import ProductSerializers
+from .serializers import ProductSerializer
 from api.mixins import StaffEditorPermissionMixin, UserQuerysetMixin
 
 
@@ -11,7 +11,7 @@ class ProductListCreateAPIView(
     generics.ListCreateAPIView
     ):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializers
+    serializer_class = ProductSerializer
 
     def perform_create(self, serializer):
         title = serializer.validated_data.get("title")
@@ -26,7 +26,7 @@ class ProductDetailAPIView(
     generics.RetrieveAPIView
     ):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializers
+    serializer_class = ProductSerializer
 
 
 class ProductUpdateAPIView(
@@ -34,7 +34,7 @@ class ProductUpdateAPIView(
     generics.UpdateAPIView
     ):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializers
+    serializer_class = ProductSerializer
     lookup_field ="pk"
 
     def perform_update(request, serializer):
@@ -48,7 +48,7 @@ class ProductDeleteAPIView(
     generics.DestroyAPIView
     ):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializers
+    serializer_class = ProductSerializer
     lookup_field = "pk"
 
     def perform_destroy(self, instance):
@@ -64,7 +64,7 @@ class ProductMixinView(
     ):
 
     queryset = Product.objects.all()
-    serializer_class = ProductSerializers
+    serializer_class = ProductSerializer
     lookup_field = 'pk'
 
     def get(self, request, *args, **kwargs):
