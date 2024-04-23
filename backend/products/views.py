@@ -14,17 +14,11 @@ class ProductListCreateAPIView(
     serializer_class = ProductSerializers
 
     def perform_create(self, serializer):
-        # email = serializer.validated_data.pop("email")
         title = serializer.validated_data.get("title")
         content = serializer.validated_data.get("content") or None
         if content is None:
             content = title
         serializer.save(user=self.request.user, content=content)
-    
-    # def get_queryset(self, *args, **kwargs):
-    #     qs = super().get_queryset(*args, **kwargs)
-    #     user = self.request.user
-    #     return qs.filter(user=user)
 
 
 class ProductDetailAPIView(
