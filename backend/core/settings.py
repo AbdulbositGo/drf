@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'algoliasearch_django',
     'rest_framework',
     'rest_framework.authtoken',
 
@@ -139,4 +140,10 @@ REST_FRAMEWORK ={
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
+}
+
+ALGOLIA = {
+    'APPLICATION_ID': 'KUT7W6FH57',
+    'API_KEY': '89a562c8db5dd35591218f1ea48067d9',
+    'INDEX_PREFIX': 'abdulbosit'
 }
