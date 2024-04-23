@@ -2,14 +2,13 @@ from rest_framework import serializers
 from rest_framework.reverse import reverse
 
 from .models import Product
-
+from api.serializers import UserPublicSerializers
 
 class ProductSerializers(serializers.ModelSerializer):
     my_discount = serializers.SerializerMethodField(read_only=True)
     url = serializers.SerializerMethodField(read_only=True)
     url_update = serializers.HyperlinkedIdentityField("product-update", lookup_field='pk')
-    # email = serializers.EmailField(write_only=True)
-    user = serializers.CharField(read_only=True)
+    user = UserPublicSerializers(read_only=True)
 
     class Meta:
         model = Product
